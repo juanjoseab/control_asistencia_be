@@ -137,17 +137,19 @@ exports.deleteGrado = async (req, res) => {
 
 
 exports.getAllAlumnosPorGradoId = async (req, res) => {
+    let alumnos = [];
     try {
-        const alumnos = await Alumno.findAll({
+        alumnos = await Alumno.findAll({
             where: { 
                 grado_id : req.params.id,
                 estado : {
                     [Op.not] : 2
                 } 
             }
-        });
-        res.status(200).json(alumnos);
+        });        
     } catch (error) {
         res.status(500).json({ message: 'Error en el servidor', error: error.message, err : error });
     }
+
+    res.status(200).json(alumnos);
 }
