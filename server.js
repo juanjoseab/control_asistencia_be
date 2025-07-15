@@ -22,7 +22,8 @@ const { sendEmail } = require('./utils/sendmail.util');
 
 // 🛡️ Middleware de seguridad CORS
 app.use(cors({
-  origin: [    
+  origin: [
+    'https://app-de-control-de-asistencia.onrender.com',    
     'http://127.0.0.1:5500',
     'http://localhost:5500',
     'https://backend-asistencia2-2.onrender.com',
