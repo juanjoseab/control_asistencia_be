@@ -39,9 +39,7 @@ exports.getAllAlumnosGrado = async (req, res) => {
         let initDate = year + '-01-01';
         let endDate = year + '-12-31';
 
-        const grado = await Grado.findByPk(req.params.id, {
-              // Incluye las asociaciones si quieres obtener datos relacionados              
-            });
+        const grado = await Grado.findByPk(req.params.id, {});
 
         if(!grado) {
             return res.status(404).json({ message: 'Grado no encontrado.' });
@@ -56,13 +54,11 @@ exports.getAllAlumnosGrado = async (req, res) => {
             } 
         });
 
-        let allAlumnos = [];
-
-
-        if(alumnos === null)  {
+        if(alumnos == null || alumnos.length < 1)  {
             return res.status(200).json([]);
-            
         }
+
+        let allAlumnos = [];
 
         alumnos.forEach( async (element, index, alumnos) => {
             
