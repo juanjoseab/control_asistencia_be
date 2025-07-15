@@ -29,6 +29,7 @@ exports.login = async (req, res) => {
 
         res.status(200).json({ message: 'Login exitoso', token, rol: usuario.rol, userId: usuario.id_usuario });
     } catch (error) {
+        console.error(error);
         res.status(500).json({ message: 'Error al crear coordinador', error: error.message });
     }
 };
