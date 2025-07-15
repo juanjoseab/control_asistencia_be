@@ -22,13 +22,13 @@ exports.getAllNiveles = async (req, res) => {
             levels.push(level);
             console.log(level);
             if (index === niveles.length -1) {
-                res.status(200).json(levels);
+                return res.status(200).json(levels);
             }
         });
         
         
     } catch (error) {
-        res.status(500).json({ message: 'Error en el servidor', error: error.message, err : error });
+        return res.status(500).json({ message: 'Error en el servidor', error: error.message, err : error });
     }
     
 }
@@ -40,9 +40,9 @@ exports.createNivel = async (req, res) => {
             "estado" : 1
 
         })
-        res.status(200).json(newNivel);
+        return res.status(200).json(newNivel);
     } catch (error) {
-        res.status(500).json({ message: 'Error en el servidor', error: error.message, err : error });
+        return res.status(500).json({ message: 'Error en el servidor', error: error.message, err : error });
     }
     
 }
@@ -55,10 +55,10 @@ exports.deleteNivel = async (req, res) => {
         }
 
         await nivel.update({"estado" : 2}); // Elimina el registro
-        res.status(204).send(nivel); // 204 No Content para eliminación exitosa
+        return res.status(204).send(nivel); // 204 No Content para eliminación exitosa
     } catch (error) {
         console.error('Error al eliminar nivel:', error);
-        res.status(500).json({ message: 'Error interno del servidor al eliminar usuario.' });
+        return res.status(500).json({ message: 'Error interno del servidor al eliminar usuario.' });
     }
     
 }
@@ -73,10 +73,10 @@ exports.getGradosPorNivelId = async (req, res) => {
                 }
             }
         });
-        res.status(200).send(grados); // 204 No Content para eliminación exitosa
+        return res.status(200).send(grados); // 204 No Content para eliminación exitosa
     } catch (error) {
         console.error('Error: ', error);
-        res.status(500).json({ message: 'Error en el servidor', error: error.message, err : error });
+        return res.status(500).json({ message: 'Error en el servidor', error: error.message, err : error });
     }
     
 }
@@ -88,9 +88,9 @@ exports.getNivelPorId = async (req, res) => {
                 id : req.params.id
             }
         });
-        res.status(200).send(nivel); // 204 No Content para eliminación exitosa
+        return res.status(200).send(nivel); // 204 No Content para eliminación exitosa
     } catch (error) {
         console.error('Error: ', error);
-        res.status(500).json({ message: 'Error en el servidor', error: error.message, err : error });
+        return res.status(500).json({ message: 'Error en el servidor', error: error.message, err : error });
     }
 }

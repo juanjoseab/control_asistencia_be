@@ -26,7 +26,7 @@ exports.getAsistencia = async (req, res) => {
                     asistencia_id : asistencia[0].id
                 }
             });
-            res.status(200).json({
+            return res.status(200).json({
                 asistencia : asistencia[0],
                 asistencias : asistencias
             });
@@ -35,7 +35,7 @@ exports.getAsistencia = async (req, res) => {
                 grado_id : req.params.gradoid,
                 fecha : req.params.fecha
             })
-            res.status(200).json({
+            return res.status(200).json({
                 asistencia : asistencia,
                 asistencias : []
             });
@@ -44,7 +44,7 @@ exports.getAsistencia = async (req, res) => {
         
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Error en el servidor', error: error.message, err : error });
+        return res.status(500).json({ message: 'Error en el servidor', error: error.message, err : error });
     }
     
 }
@@ -82,11 +82,11 @@ exports.saveAlumnoAsistencia = async (req, res) => {
                 uniforme_incompleto : req.body.uniforme_incompleto
             });
         }
-        res.status(200).json(asistenciaAlumno);
+        return res.status(200).json(asistenciaAlumno);
         
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Error en el servidor', error: error.message, err : error });
+        return res.status(500).json({ message: 'Error en el servidor', error: error.message, err : error });
     }
     
 }
@@ -104,7 +104,7 @@ exports.enviarNotificacion = async (req, res) => {
         });
 
         if(alumno === null) {
-            res.status(404).json({ message: 'Alumno no encontrado', error: error.message, err : error });
+            return res.status(404).json({ message: 'Alumno no encontrado', error: error.message, err : error });
         }
 
         let email = '';
@@ -125,11 +125,11 @@ exports.enviarNotificacion = async (req, res) => {
             email : email
         });
 
-        res.status(200).json(notificacion);
+        return res.status(200).json(notificacion);
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Error en el servidor', error: error.message, err : error });
+        return res.status(500).json({ message: 'Error en el servidor', error: error.message, err : error });
     }
 
     //sendEmail

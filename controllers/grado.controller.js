@@ -24,9 +24,9 @@ exports.getGrado = async (req, res) => {
                 id : req.params.id
             }
         });
-        res.status(200).json(grado);
+        return res.status(200).json(grado);
     } catch (error) {
-        res.status(500).json({ message: 'Error en el servidor', error: error.message, err : error });
+        return res.status(500).json({ message: 'Error en el servidor', error: error.message, err : error });
     }
 }
 
@@ -59,6 +59,10 @@ exports.getAllAlumnosGrado = async (req, res) => {
         let allAlumnos = [];
 
 
+        if(alumnos === null)  {
+            return res.status(200).json([]);
+            
+        }
 
         alumnos.forEach( async (element, index, alumnos) => {
             
@@ -89,18 +93,15 @@ exports.getAllAlumnosGrado = async (req, res) => {
 
             element.total_asistencias = asistenciasCount;
             element.setDataValue('total_asistencias', asistenciasCount);
-
-            console.log(element);
-
             allAlumnos.push(element);
 
             if( index === alumnos.length -1 ) {
-                res.status(200).json(allAlumnos)
+                res.status(200).json(allAlumnos);
             }
         });
 
     } catch (error) {
-        res.status(500).json({ message: 'Error en el servidor', error: error.message, err : error });
+        return res.status(500).json({ message: 'Error en el servidor', error: error.message, err : error });
     }
 }
 
@@ -112,9 +113,9 @@ exports.createGrado = async (req, res) => {
             "estado" : 1
 
         })
-        res.status(200).json(newGrado);
+        return res.status(200).json(newGrado);
     } catch (error) {
-        res.status(500).json({ message: 'Error en el servidor', error: error.message, err : error });
+        return res.status(500).json({ message: 'Error en el servidor', error: error.message, err : error });
     }
     
 }
@@ -127,10 +128,10 @@ exports.deleteGrado = async (req, res) => {
         }
 
         await grado.update({"estado" : 2}); // Elimina el registro
-        res.status(204).send(grado); // 204 No Content para eliminación exitosa
+        return res.status(204).send(grado); // 204 No Content para eliminación exitosa
     } catch (error) {
         console.error('Error al eliminar grado:', error);
-        res.status(500).json({ message: 'Error interno del servidor al eliminar grado.' });
+        return res.status(500).json({ message: 'Error interno del servidor al eliminar grado.' });
     }
     
 }
@@ -148,8 +149,8 @@ exports.getAllAlumnosPorGradoId = async (req, res) => {
             }
         });        
     } catch (error) {
-        res.status(500).json({ message: 'Error en el servidor', error: error.message, err : error });
+        return res.status(500).json({ message: 'Error en el servidor', error: error.message, err : error });
     }
 
-    res.status(200).json(alumnos);
+    return res.status(200).json(alumnos);
 }

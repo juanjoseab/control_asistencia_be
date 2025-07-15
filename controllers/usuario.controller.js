@@ -17,10 +17,10 @@ exports.getAllUsuarios = async (req, res) => {
         { model: Nivel, as: 'nivel' }
       ]
     });
-    res.status(200).json(usuarios);
+    return res.status(200).json(usuarios);
   } catch (error) {
     console.error('Error al obtener usuarios:', error);
-    res.status(500).json({ message: 'Error interno del servidor al obtener usuarios.' });
+    return res.status(500).json({ message: 'Error interno del servidor al obtener usuarios.' });
   }
 };
 
@@ -36,10 +36,10 @@ exports.getUsuarioById = async (req, res) => {
     if (!usuario) {
       return res.status(404).json({ message: 'Usuario no encontrado.' });
     }
-    res.status(200).json(usuario);
+    return res.status(200).json(usuario);
   } catch (error) {
     console.error('Error al obtener usuario por ID:', error);
-    res.status(500).json({ message: 'Error interno del servidor al obtener usuario.' });
+    return res.status(500).json({ message: 'Error interno del servidor al obtener usuario.' });
   }
 };
 
@@ -57,10 +57,10 @@ exports.createUsuario = async (req, res) => {
       coordinador_id: req.body.coordinador_id,
       nivel_id : req.body.nivel_id
     });
-    res.status(201).json(newUsuario);
+    return res.status(201).json(newUsuario);
   } catch (error) {
     console.error('Error al crear usuario:', error);
-    res.status(500).json({ message: 'Error interno del servidor al crear usuario.' });
+    return res.status(500).json({ message: 'Error interno del servidor al crear usuario.' });
   }
 };
 
@@ -73,10 +73,10 @@ exports.updateUsuario = async (req, res) => {
     }
 
     await usuario.update(req.body); // Actualiza con los datos del cuerpo de la solicitud
-    res.status(200).json(usuario);
+    return res.status(200).json(usuario);
   } catch (error) {
     console.error('Error al actualizar usuario:', error);
-    res.status(500).json({ message: 'Error interno del servidor al actualizar usuario.' });
+    return res.status(500).json({ message: 'Error interno del servidor al actualizar usuario.' });
   }
 };
 
@@ -89,9 +89,9 @@ exports.deleteUsuario = async (req, res) => {
     }
 
     await usuario.update({estado : 2}); // Elimina el registro
-    res.status(204).send(); // 204 No Content para eliminación exitosa
+    return res.status(204).send(); // 204 No Content para eliminación exitosa
   } catch (error) {
     console.error('Error al eliminar usuario:', error);
-    res.status(500).json({ message: 'Error interno del servidor al eliminar usuario.' });
+    return res.status(500).json({ message: 'Error interno del servidor al eliminar usuario.' });
   }
 };

@@ -5,9 +5,9 @@ exports.getAllAlumnos = async (req, res) => {
         const grado = await Alumno.findAll({
               // Incluye las asociaciones si quieres obtener datos relacionados              
             });
-        res.status(200).json(grado);
+        return res.status(200).json(grado);
     } catch (error) {
-        res.status(500).json({ message: 'Error en el servidor', error: error.message, err : error });
+        return res.status(500).json({ message: 'Error en el servidor', error: error.message, err : error });
     }
 }
 
@@ -23,9 +23,9 @@ exports.createAlumno = async (req, res) => {
             "estado" : 1
 
         })
-        res.status(200).json(newAlumno);
+        return res.status(200).json(newAlumno);
     } catch (error) {
-        res.status(500).json({ message: 'Error en el servidor', error: error.message, err : error });
+        return res.status(500).json({ message: 'Error en el servidor', error: error.message, err : error });
     }
     
 }
@@ -39,10 +39,10 @@ exports.deleteAlumno = async (req, res) => {
         }
 
         await alumno.update({"estado" : 2}); // Elimina el registro
-        res.status(204).send(alumno); // 204 No Content para eliminación exitosa
+        return res.status(204).send(alumno); // 204 No Content para eliminación exitosa
     } catch (error) {
         console.error('Error al eliminar alumno:', error);
-        res.status(500).json({ message: 'Error interno del servidor al eliminar alumno.' });
+        return res.status(500).json({ message: 'Error interno del servidor al eliminar alumno.' });
     }
     
 }
