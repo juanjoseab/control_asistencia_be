@@ -1,5 +1,5 @@
 const { Op } = require('sequelize');
-const { Nivel, Grado } = require('../models'); 
+const { Nivel, Grado, Usuario } = require('../models'); 
 
 
 exports.getAllNiveles = async (req, res) => {
@@ -10,6 +10,52 @@ exports.getAllNiveles = async (req, res) => {
                 estado : {
                     [Op.not] : 2
                 } 
+            }
+        });
+        niveles.forEach( async (element, index, niveles) => {
+            let level = {}
+            level.id = element.id;
+            level.nombre = element.nombre;
+            level.estado = element.estado;
+            console.log(level);
+            level.grados = await Grado.findAll({ where: { nivel_id : element.id } });
+            levels.push(level);
+            console.log(level);
+            if (index === niveles.length -1) {
+                return res.status(200).json(levels);
+            }
+        });
+        
+        
+    } catch (error) {
+        return res.status(500).json({ message: 'Error en el servidor', error: error.message, err : error });
+    }
+    
+}
+
+exports.getAllNivelesPorProfesorId = async (req, res) => {
+    try {
+
+        const profesor = await Usuario.findOne({
+            where : {
+                id : req.params.id
+            }
+        });
+
+        console.log(profesor);
+
+        if(profesor == null || typeof profesor.id == 'undefined' ) {
+            return res.status(404).json({ message: 'Profesor no encontrado' })
+        }
+
+
+        let levels = [];
+        const niveles = await Nivel.findAll({
+            where: { 
+                estado : {
+                    [Op.not] : 2
+                },
+                id : profesor.nivel_id 
             }
         });
         niveles.forEach( async (element, index, niveles) => {

@@ -1,4 +1,5 @@
-const { Nivel, Grado, Alumno } = require('../models'); 
+const { where } = require('sequelize');
+const { Nivel, Grado, Alumno, Notificacion } = require('../models'); 
 
 exports.getAllAlumnos = async (req, res) => {
     try {
@@ -7,6 +8,20 @@ exports.getAllAlumnos = async (req, res) => {
             });
         return res.status(200).json(grado);
     } catch (error) {
+        return res.status(500).json({ message: 'Error en el servidor', error: error.message, err : error });
+    }
+}
+
+exports.getAlumnoPorId = async (req, res) => {
+    try {
+        const alumno = await Alumno.findOne({
+            where : {
+                id : req.params.id
+            }
+        });
+        return res.status(200).send(alumno); // 204 No Content para eliminación exitosa
+    } catch (error) {
+        console.error('Error: ', error);
         return res.status(500).json({ message: 'Error en el servidor', error: error.message, err : error });
     }
 }
@@ -45,5 +60,28 @@ exports.deleteAlumno = async (req, res) => {
         return res.status(500).json({ message: 'Error interno del servidor al eliminar alumno.' });
     }
     
+}
+
+exports.getAlumnoNotificaciones = async (req, res) => {
+    let notificaciones = [];
+    try {
+        notificaciones = await Notificacion.findAll(
+            {
+                where : {
+                    alumno_id : req.params.id
+                }
+            }
+        );
+
+        if (!notificaciones) {
+            return res.status(404).json({ message: 'Notificaciones no encontradas.' });
+        }
+
+        return res.status(200).send(notificaciones); // 204 No Content para eliminación exitosa
+    } catch (error) {
+        console.error('Error al buscar notificaciones:', error);
+        return res.status(500).json({ message: 'Error interno buscar las notificaciones.' });
+    }
+
 }
 

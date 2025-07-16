@@ -41,9 +41,9 @@ module.exports = (sequelize) => {
   // Asume que tienes el modelo 'Nivel' definido en otro archivo
   Notificacion.associate = (models) => {
     Notificacion.belongsTo(models.Alumno, {
-      foreignKey: 'notificacion_id', // La columna en la tabla `Notificacion`
+      foreignKey: 'alumno_id', // La columna en la tabla `Notificacion`
       targetKey: 'id',        // La columna en la tabla `nivel`
-      as: 'notificacion',            // Un alias para cuando incluyas el nivel en tus consultas
+      as: 'alumno',            // Un alias para cuando incluyas el nivel en tus consultas
     });
   };
 

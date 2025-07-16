@@ -132,5 +132,61 @@ exports.enviarNotificacion = async (req, res) => {
         return res.status(500).json({ message: 'Error en el servidor', error: error.message, err : error });
     }
 
+
+    
+
     //sendEmail
+}
+
+exports.enviarNotificacionAll = async (req, res) => {
+
+    try {
+        let today = new Date()
+        let currentDate = today.toISOString().split('T')[0];
+
+        let alumnos = await Alumno.findAll({
+            where : {
+                grado_id : req.body.grado_id
+            }
+        });
+
+        if(alumnos === null || alumnos.length < 1) {
+            return res.status(404).json({ message: 'Alumnos no encontrados', error: error.message, err : error });
+        }
+
+        for(let i = 0; i < alumnos.length; i++) {
+            let alumno = alumnos[i];
+            let email = '';
+            if(alumno.email) {
+                await sendEmail(alumno.email, "NOTIFICACION DESDE EL CONTROL DE ASISTENCIA", req.body.mensaje);
+                email = alumno.email;
+            }
+            
+            if(alumno.email_encargado) {
+                await sendEmail(alumno.email_encargado, "NOTIFICACION DESDE EL CONTROL DE ASISTENCIA", req.body.mensaje);
+                email = email + ',' + alumno.email_encargado;
+            }
+
+            let notif = await Notificacion.create({
+                mensaje : req.body.mensaje,
+                fecha : currentDate,
+                alumno_id : alumno.id,
+                email : email
+            });
+
+            console.log(notif);
+
+            if(i == alumnos.length -1) {
+                return res.status(200).json({ message: 'notificaciones enviadas' });
+            }
+
+        }
+
+        
+        //return res.status(200).json({ message: 'notificaciones enviadas' });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Error en el servidor', error: error.message, err : error });
+    }
 }
